@@ -7,6 +7,6 @@
 6. ```pip install Pillow```
 7. ```pip install scikit-image```
 8. ```conda install cudatoolkit=10.1.243```
-** no notebook ```pip install notebook```
+9. don't have jupyter notebook ```pip install notebook```
 # Usage
 1. ```conda activate usai```
