@@ -1,8 +1,8 @@
 # Installation guide
 1. create a new conda environment by ```conda create --name usai python=3.6.9```
 2. ```pip install -U --pre efficientnet```
-3. ```pip install tensorflow```
-4. ```conda install keras```
+3. ```pip install tensorflow==2.2.0```
+4. ```conda install keras==2.4.3```
 5. ```pip install pandas```
 6. ```pip install Pillow```
 7. ```pip install scikit-image```
