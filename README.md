@@ -10,3 +10,6 @@
 9. don't have jupyter notebook ```pip install notebook```
 # Usage
 1. ```conda activate usai```
+# Error Keras
+```from keras.utils import generic_utils```
+
