@@ -14,12 +14,12 @@ from tensorflow.keras import callbacks
 import pandas as pd
 from keras.utils import generic_utils
 
-os.environ["CUDA_VISIBLE_DEVICES"]="1"
+# os.environ["CUDA_VISIBLE_DEVICES"]="1"
 
 from PIL import Image, ImageFile
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
-batch_size = 32
+batch_size = 16
 epochs = 200
 
 #Train
