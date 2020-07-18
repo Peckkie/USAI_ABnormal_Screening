@@ -19,7 +19,7 @@ os.environ["CUDA_VISIBLE_DEVICES"]="1"
 from PIL import Image, ImageFile
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
-batch_size = 16
+batch_size = 32
 epochs = 200
 
 #Train
@@ -32,15 +32,32 @@ train_dir = os.path.join(base_dir, 'train')
 valframe = pd.read_csv( '/media/tohn/SSD/ImageForTrainTest/validation.csv')
 validation_dir = os.path.join(base_dir, 'validation')
 
-#load model
-import efficientnet.tfkeras
+from keras.applications.resnet_v2 import ResNet101V2
+from efficientnet.keras import center_crop_and_resize, preprocess_input
+conv_base = ResNet101V2(weights='imagenet')
+height = width = conv_base.input_shape[1]
+input_shape = (height, width, 3)
 
-from tensorflow.keras.preprocessing.image import ImageDataGenerator
-from tensorflow.keras.models import load_model
+# loading pretrained conv base model
+conv_base = ResNet101V2(weights='imagenet', include_top=False, input_shape=input_shape)
 
-model_dir = '/media/tohn/SSD/trainEffbyB/R1/models/B5_R1_imnet.h5'
-model = load_model(model_dir)
-height = width = model.input_shape[1]
+# create new model with a new classification layer
+x = conv_base.output  
+global_average_layer = layers.GlobalAveragePooling2D(name = 'head_pooling')(x)
+dropout_layer_1 = layers.Dropout(0.50,name = 'head_dropout')(global_average_layer)
+prediction_layer = layers.Dense(2, activation='softmax',name = 'prediction_layer')(dropout_layer_1)
+
+model = models.Model(inputs= conv_base.input, outputs=prediction_layer) 
+model.summary()
+
+#showing before&after freezing
+print('This is the number of trainable layers '
+      'before freezing the conv base:', len(model.trainable_weights))
+#conv_base.trainable = False  # freeze เพื่อรักษา convolutional base's weight
+for layer in conv_base.layers:
+    layer.trainable = False
+print('This is the number of trainable layers '
+      'after freezing the conv base:', len(model.trainable_weights))  #freez แล้วจะเหลือ max pool and dense
 
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
@@ -76,9 +93,9 @@ test_generator = test_datagen.flow_from_dataframe(
         color_mode= 'rgb',
         class_mode='categorical')
 
-os.chdir('/media/tohn/SSD/unfreez_model/TrainB5_NA_UnBlock1')
+os.chdir('/media/tohn/SSD/unfreez_model/ResNet')
 
-root_logdir = '/media/tohn/SSD/unfreez_model/TrainB5_NA_UnBlock1/my_logs7ab_16'
+root_logdir = '/media/tohn/SSD/unfreez_model/ResNet/my_logs_RN101_V2'
 def get_run_logdir():
     import time
     run_id = time.strftime("run_%Y_%m_%d_%H_%M_%S")
@@ -88,7 +105,7 @@ run_logdir = get_run_logdir()
 tensorboard_cb = callbacks.TensorBoard(log_dir = run_logdir)
 
 
-# os.makedirs("./models_6", exist_ok=True)
+# os.makedirs("./models", exist_ok=True)
 
 def avoid_error(gen):
     while True:
@@ -98,27 +115,10 @@ def avoid_error(gen):
         except:
             pass
 
-#Unfreez
-model.trainable = True
-set_trainable = False
-for layer in model.layers:
-    if layer.name == 'block7a_se_excite':
-        set_trainable = True
-    if set_trainable:
-        layer.trainable = True
-    else:
-        layer.trainable = False
-print('This is the number of trainable layers '
-      'after freezing the conv base:', len(model.trainable_weights))  
-
+ #Training
 model.compile(loss='categorical_crossentropy',
               optimizer=optimizers.RMSprop(lr=2e-5),
               metrics=['acc'])
-
-run_logdir = get_run_logdir()
-
-tensorboard_cb = callbacks.TensorBoard(run_logdir)
-#early_stop_cb = callbacks.EarlyStopping(monitor='val_acc', patience=66, mode= 'max')
 
 history = model.fit_generator(
       avoid_error(train_generator),
@@ -128,27 +128,15 @@ history = model.fit_generator(
       validation_steps= len(valframe) //batch_size,
       callbacks = [tensorboard_cb])
 
-model.save('./models/B5_R2_unfreez7_16.h5')
-      
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+model.save('./models/RN101_R1_V2.h5')
+
+
+
+
+
+
+
+
+
+
+

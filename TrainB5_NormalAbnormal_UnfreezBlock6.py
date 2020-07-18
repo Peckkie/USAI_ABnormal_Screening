@@ -19,7 +19,7 @@ os.environ["CUDA_VISIBLE_DEVICES"]="0"
 from PIL import Image, ImageFile
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
-batch_size = 32
+batch_size = 16
 epochs = 200
 
 #Train
@@ -78,7 +78,7 @@ test_generator = test_datagen.flow_from_dataframe(
 
 os.chdir('/media/tohn/SSD/unfreez_model/TrainB5_NA_UnBlock1')
 
-root_logdir = '/media/tohn/SSD/unfreez_model/TrainB5_NA_UnBlock1/my_logs6a'
+root_logdir = '/media/tohn/SSD/unfreez_model/TrainB5_NA_UnBlock1/my_logs6a_16'
 def get_run_logdir():
     import time
     run_id = time.strftime("run_%Y_%m_%d_%H_%M_%S")
@@ -125,7 +125,7 @@ history = model.fit_generator(
       validation_steps= len(valframe) //batch_size,
       callbacks = [tensorboard_cb])
 
-model.save('./models/B5_R2_unfreez6.h5')
+model.save('./models/B5_R2_unfreez6_16.h5')
       
         
         
