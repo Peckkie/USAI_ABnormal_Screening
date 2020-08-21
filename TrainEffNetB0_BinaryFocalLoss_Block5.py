@@ -17,6 +17,7 @@ from focal_loss import BinaryFocalLoss
 
 os.environ["CUDA_VISIBLE_DEVICES"]="1"
 
+
 from PIL import Image, ImageFile
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 

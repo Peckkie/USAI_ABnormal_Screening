@@ -22,13 +22,13 @@ batch_size = 16
 epochs = 200
 
 #Train
-dataframe = pd.read_csv('/home/yupaporn/USAI/traindf.csv')
+dataframe = pd.read_csv('/home/yupaporn/codes/USAI/traindf.csv')
 base_dir = '/media/tohn/SSD/Image/'
 os.chdir(base_dir)
 train_dir = os.path.join(base_dir, 'train')
 
 #validation
-valframe = pd.read_csv( '/home/yupaporn/USAI/validationdf.csv')
+valframe = pd.read_csv( '/home/yupaporn/codes/USAI/validationdf.csv')
 validation_dir = os.path.join(base_dir, 'validation')
 
 #load model
