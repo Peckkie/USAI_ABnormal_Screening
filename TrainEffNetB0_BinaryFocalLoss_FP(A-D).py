@@ -14,7 +14,7 @@ from tensorflow.keras import callbacks
 import pandas as pd
 from keras.utils import generic_utils
 import tensorflow as tf
-from focal_loss import BinaryFocalLoss
+from focal_loss import SparseCategoricalFocalLoss 
 
 os.environ["CUDA_VISIBLE_DEVICES"]="0"
 
@@ -117,7 +117,7 @@ def avoid_error(gen):
             pass
 
  #Training
-model.compile(loss=BinaryFocalLoss(gamma=2),
+model.compile(loss=SparseCategoricalFocalLoss(gamma=2),
               optimizer=optimizers.RMSprop(lr=2e-5),
               metrics=['acc'])
 
