@@ -13,10 +13,9 @@ import os
 from tensorflow.keras import callbacks
 import pandas as pd
 from keras.utils import generic_utils
-import tensorflow as tf
-from focal_loss import BinaryFocalLoss
 
-os.environ["CUDA_VISIBLE_DEVICES"]="0"
+
+os.environ["CUDA_VISIBLE_DEVICES"]="1"
 
 from PIL import Image, ImageFile
 ImageFile.LOAD_TRUNCATED_IMAGES = True
@@ -97,7 +96,7 @@ test_generator = test_datagen.flow_from_dataframe(
 
 os.chdir('/media/tohn/SSD/ModelTrainByImage/R2')
 
-root_logdir = '/media/tohn/SSD/ModelTrainByImage/R2/my_logsB0FP'
+root_logdir = '/media/tohn/SSD/ModelTrainByImage/R2/my_logsB0FP2'
 def get_run_logdir():
     import time
     run_id = time.strftime("run_%Y_%m_%d_%H_%M_%S")
@@ -117,7 +116,7 @@ def avoid_error(gen):
             pass
 
  #Training
-model.compile(loss=BinaryFocalLoss(gamma=2),
+model.compile(loss='categorical_crossentropy',
               optimizer=optimizers.RMSprop(lr=2e-5),
               metrics=['acc'])
 
@@ -129,4 +128,4 @@ history = model.fit_generator(
       validation_steps= len(valframe) //batch_size,
       callbacks = [tensorboard_cb])
 
-model.save('./models/B0_R1_FP.h5')
+model.save('./models/B0_R1_FP2.h5')
