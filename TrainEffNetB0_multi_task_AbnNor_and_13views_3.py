@@ -81,7 +81,7 @@ import efficientnet.tfkeras
 
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.models import load_model
-EPOCHS = 2
+EPOCHS = 200
 batch_size = 16
 model_dir = '/media/tohn/SSD/ModelTrainByImage/R1/models/B0_R1.h5'
 model = load_model(model_dir)
