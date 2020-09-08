@@ -25,13 +25,13 @@ batch_size = 16
 epochs = 200
 
 #Train
-dataframe = pd.read_csv('/home/yupaporn/codes/USAI/traindf_fold2.csv')
+dataframe = pd.read_csv('/home/yupaporn/codes/USAI/traindf_fold3.csv')
 base_dir = '/media/tohn/SSD/Image2/'
 os.chdir(base_dir)
 train_dir = os.path.join(base_dir, 'train')
 
 #validation
-valframe = pd.read_csv( '/home/yupaporn/codes/USAI/validationdf_fold2.csv')
+valframe = pd.read_csv( '/home/yupaporn/codes/USAI/validationdf_fold3.csv')
 validation_dir = os.path.join(base_dir, 'validation')
 
 from efficientnet.keras import EfficientNetB5 as Net
@@ -95,9 +95,9 @@ test_generator = test_datagen.flow_from_dataframe(
         color_mode= 'rgb',
         class_mode='categorical')
 
-os.chdir('/media/tohn/SSD/ModelTrainByImage/R1_2')
+os.chdir('/media/tohn/SSD/ModelTrainByImage/R1_3')
 
-root_logdir = '/media/tohn/SSD/ModelTrainByImage/R1_2/my_logsB5'
+root_logdir = '/media/tohn/SSD/ModelTrainByImage/R1_3/my_logsB5'
 def get_run_logdir():
     import time
     run_id = time.strftime("run_%Y_%m_%d_%H_%M_%S")
