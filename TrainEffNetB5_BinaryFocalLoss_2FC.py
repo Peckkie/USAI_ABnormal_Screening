@@ -16,7 +16,7 @@ from keras.utils import generic_utils
 import tensorflow as tf
 from focal_loss import BinaryFocalLoss
 
-os.environ["CUDA_VISIBLE_DEVICES"]="1"
+os.environ["CUDA_VISIBLE_DEVICES"]="0"
 
 from PIL import Image, ImageFile
 ImageFile.LOAD_TRUNCATED_IMAGES = True
@@ -26,7 +26,7 @@ epochs = 200
 
 #Train
 dataframe = pd.read_csv('/home/yupaporn/codes/USAI/traindf_fold1.csv')
-base_dir = '/media/tohn/SSD/Images/Image1'
+base_dir = '/media/tohn/SSD/Images/Image2'
 os.chdir(base_dir)
 train_dir = os.path.join(base_dir, 'train')
 
@@ -49,9 +49,7 @@ global_average_layer = layers.GlobalAveragePooling2D(name = 'head_pooling')(x)
 dropout_layer_1 = layers.Dropout(0.50,name = 'head_dropout_1')(global_average_layer)
 FC1 = layers.Dense(1000, activation='softmax',name = 'FC1')(dropout_layer_1)
 dropout_layer_2 = layers.Dropout(0.50,name = 'head_dropout_2')(FC1)
-FC2 = layers.Dense(1000, activation='softmax',name = 'FC2')(dropout_layer_2)
-dropout_layer_3 = layers.Dropout(0.50,name = 'head_dropout_3')(FC2)
-prediction_layer = layers.Dense(2, activation='softmax',name = 'prediction_layer')(dropout_layer_3)
+prediction_layer = layers.Dense(2, activation='softmax',name = 'prediction_layer')(dropout_layer_2)
 
 model = models.Model(inputs= conv_base.input, outputs=prediction_layer) 
 model.summary()
@@ -101,7 +99,7 @@ test_generator = test_datagen.flow_from_dataframe(
 
 os.chdir('/media/tohn/SSD/ModelTrainByImages/R1_1')
 
-root_logdir = '/media/tohn/SSD/ModelTrainByImages/R1_1/my_logsB52_focal_3FC'
+root_logdir = '/media/tohn/SSD/ModelTrainByImages/R1_1/my_logsB52_focal_2FC'
 def get_run_logdir():
     import time
     run_id = time.strftime("run_%Y_%m_%d_%H_%M_%S")
@@ -133,4 +131,4 @@ history = model.fit_generator(
       validation_steps= len(valframe) //batch_size,
       callbacks = [tensorboard_cb])
 
-model.save('./models/B5_3FC_focal_R12.h5')
+model.save('./models/B5_2FC_focal_R12.h5')
