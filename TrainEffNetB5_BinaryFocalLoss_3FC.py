@@ -15,7 +15,7 @@ import pandas as pd
 from keras.utils import generic_utils
 import tensorflow as tf
 from focal_loss import BinaryFocalLoss
-
+#gg
 os.environ["CUDA_VISIBLE_DEVICES"]="1"
 
 from PIL import Image, ImageFile
