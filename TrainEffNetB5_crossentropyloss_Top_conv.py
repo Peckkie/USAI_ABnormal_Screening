@@ -13,7 +13,7 @@ import os
 from tensorflow.keras import callbacks
 import pandas as pd
 
-os.environ["CUDA_VISIBLE_DEVICES"]="0"
+os.environ["CUDA_VISIBLE_DEVICES"]="1"
 
 from PIL import Image, ImageFile
 ImageFile.LOAD_TRUNCATED_IMAGES = True
@@ -37,7 +37,7 @@ import efficientnet.tfkeras
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.models import load_model
 
-model_dir = '/media/tohn/SSD/ModelTrainByImages/R1_1/models/B5_2FC_relu_R12.h5'
+model_dir = '/media/tohn/SSD/ModelTrainByImages/R1_1/models/B5_3FC_relu_R12.h5'
 model = load_model(model_dir)
 height = width = model.input_shape[1]
 
@@ -77,7 +77,7 @@ test_generator = test_datagen.flow_from_dataframe(
 
 os.chdir('/media/tohn/SSD/ModelTrainByImage/R1_2')
 
-root_logdir = '/media/tohn/SSD/ModelTrainByImage/R1_2/my_logs_topconv2_B5_2FC'
+root_logdir = '/media/tohn/SSD/ModelTrainByImage/R1_2/my_logs_topconv2_B5_3FC'
 def get_run_logdir():
     import time
     run_id = time.strftime("run_%Y_%m_%d_%H_%M_%S")
@@ -127,7 +127,7 @@ history = model.fit_generator(
       validation_steps= len(valframe) //batch_size,
       callbacks = [tensorboard_cb])
 
-model.save('./models/B5R2_blocktop_conv_2FC_2.h5')
+model.save('./models/B5R2_blocktop_conv_3FC_2.h5')
       
         
         
