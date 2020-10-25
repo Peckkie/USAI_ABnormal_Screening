@@ -37,7 +37,7 @@ import efficientnet.tfkeras
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.models import load_model
 
-model_dir = '/media/tohn/SSD/ModelTrainByImages/R1_1/models/B5_2FC_relu_R12.h5'
+model_dir = '/media/tohn/SSD/ModelTrainByImages/R1_1/models/B0_R1_FP2_relu_3FC.h5'
 model = load_model(model_dir)
 height = width = model.input_shape[1]
 
@@ -77,7 +77,7 @@ test_generator = test_datagen.flow_from_dataframe(
 
 os.chdir('/media/tohn/SSD/ModelTrainByImages/R2_1')
 
-root_logdir = '/media/tohn/SSD/ModelTrainByImages/R2_1/my_logs_top_conv_5FP_3FC'
+root_logdir = '/media/tohn/SSD/ModelTrainByImages/R2_1/my_logs_block72_5FP_3FC'
 def get_run_logdir():
     import time
     run_id = time.strftime("run_%Y_%m_%d_%H_%M_%S")
@@ -101,7 +101,7 @@ def avoid_error(gen):
 model.trainable = True
 set_trainable = False
 for layer in model.layers:
-    if layer.name == 'top_conv':
+    if layer.name == 'block7a_se_excite':
         set_trainable = True
     if set_trainable:
         layer.trainable = True
@@ -127,7 +127,7 @@ history = model.fit_generator(
       validation_steps= len(valframe) //batch_size,
       callbacks = [tensorboard_cb])
 
-model.save('./models/B0R2_top_conv_5FP_3FC.h5')
+model.save('./models/B0R2_block7_5FP_3FC.h5')
       
         
         
