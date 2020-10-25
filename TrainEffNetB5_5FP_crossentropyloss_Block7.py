@@ -1,4 +1,4 @@
-import PIL
+mport PIL
 from keras import models
 from keras import layers
 from tensorflow.keras import optimizers
@@ -13,7 +13,7 @@ import os
 from tensorflow.keras import callbacks
 import pandas as pd
 
-os.environ["CUDA_VISIBLE_DEVICES"]="0"
+os.environ["CUDA_VISIBLE_DEVICES"]="1"
 
 from PIL import Image, ImageFile
 ImageFile.LOAD_TRUNCATED_IMAGES = True
