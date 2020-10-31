@@ -27,11 +27,11 @@ from joblib import Parallel, delayed
   #choose gpu on processing 
 os.environ["CUDA_VISIBLE_DEVICES"]="0" 
 
-# import data 
-dataframe_train = pd.read_csv (r'/home/yupaporn/codes/USAI/traindf_fold1.csv')
-dataframe_test = pd.read_csv (r'/home/yupaporn/codes/USAI/validationdf_fold1.csv')
-train_dir = '/media/tohn/SSD/Images/Image1/train/'
-test_dir = '/media/tohn/SSD/Images/Image1/validation/'
+# import data
+dataframe_train = pd.read_csv (r'/home/USAI/codes/USAI/traindf_fold1.csv')
+dataframe_test = pd.read_csv (r'/home/USAI/codes/USAI/validationdf_fold1.csv')
+train_dir = '/home/USAI/media/tohn/SSD/Images/Image1/train/'
+test_dir = '/home/USAI/media/tohn/SSD/Images/Image1/validation/'
     
 dataframe_train1HOT = pd.get_dummies(dataframe_train, columns=['Views', 'Class'], prefix=['Views', 'Class'])
 dataframe_test1HOT = pd.get_dummies(dataframe_test, columns=['Views', 'Class'], prefix=['Views', 'Class'])
@@ -43,7 +43,7 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.models import load_model
 EPOCHS = 200
 batch_size = 16
-model_dir = '/media/tohn/SSD/ModelTrainByImages/R1_1/models/B5_R1.h5'
+model_dir = '/home/USAI/media/tohn/SSD/ModelTrainByImages/R1_1/models/B5_R1.h5'
 model = load_model(model_dir)
 height = width = model.input_shape[1]
 
@@ -175,8 +175,8 @@ def load_test_data():
 #tensorboard
 import datetime
 current_time = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
-train_log_dir = '/media/tohn/SSD/ModelTrainByImages/R2_1/mylogs_AN_5FP_1FC_1/' + current_time + '/train'
-test_log_dir = '/media/tohn/SSD/ModelTrainByImages/R2_1/mylogs_AN_5FP_1FC_1/' + current_time + '/test'
+train_log_dir = '/home/USAI/media/tohn/SSD/ModelTrainByImages/R2_1/mylogs_AN_5FP_1FC_V2_1/' + current_time + '/train'
+test_log_dir = '/home/USAI/media/tohn/SSD/ModelTrainByImages/R2_1/mylogs_AN_5FP_1FC_V2_1/' + current_time + '/test'
 train_summary_writer = tf.summary.create_file_writer(train_log_dir)
 test_summary_writer = tf.summary.create_file_writer(test_log_dir)
 
@@ -212,6 +212,6 @@ for epoch in range(EPOCHS):
 
 
 #save model   
-model2.save('/media/tohn/SSD/ModelTrainByImages/R2_1/models/NorAb_multitask_AN_5FP_1FC_1.h5')
+model2.save('/home/USAI/media/tohn/SSD/ModelTrainByImages/R2_1/models/NorAb_multitask_AN_5FP_1FC_V2_1.h5')
 
     
