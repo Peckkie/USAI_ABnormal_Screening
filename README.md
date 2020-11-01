@@ -9,6 +9,7 @@
 8. ```conda install cudatoolkit=10.1.243```
 9. don't have jupyter notebook ```pip install notebook```
 10. ```pip install focal-loss```
+11. for multi-task ```pip install joblib```
 # Usage
 1. ```conda activate usai```
 # Error Keras
