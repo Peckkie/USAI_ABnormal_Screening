@@ -28,13 +28,13 @@ from joblib import Parallel, delayed
 os.environ["CUDA_VISIBLE_DEVICES"]="0" 
 
 # import data 
-dataframe_train = pd.read_csv (r'/home/yupaporn/codes/USAI/Traindf_fold1.csv')
-dataframe_test = pd.read_csv (r'/home/yupaporn/codes/USAI/Validationdf_fold1.csv')
-train_dir = '/media/tohn/SSD/Images/Image1/train/'
-test_dir = '/media/tohn/SSD/Images/Image1/validation/'
+dataframe_train = pd.read_csv (r'/home/USAI/codes/USAI/Traindf_fold1.csv')
+dataframe_test = pd.read_csv (r'/home/USAI/codes/USAI/Validationdf_fold1.csv')
+train_dir = '/home/USAI/media/tohn/SSD/Images/Image1/train/'
+test_dir = '/home/USAI/media/tohn/SSD/Images/Image1/validation/'
     
-dataframe_train1HOT = pd.get_dummies(dataframe_train, columns=['Sub_class', 'Views'], prefix=['Sub_class', 'Class'])
-dataframe_test1HOT = pd.get_dummies(dataframe_test, columns=['Sub_class', 'Views'], prefix=['Sub_class', 'Class'])
+dataframe_train1HOT = pd.get_dummies(dataframe_train, columns=['Sub_class', 'Views'], prefix=['Sub_class', 'Views'])
+dataframe_test1HOT = pd.get_dummies(dataframe_test, columns=['Sub_class', 'Views'], prefix=['Sub_class', 'Views'])
 
 #load model
 import efficientnet.tfkeras
@@ -43,18 +43,16 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.models import load_model
 EPOCHS = 200
 batch_size = 16
-model_dir = '/media/tohn/SSD/ModelTrainByImages/R1_1/models/B5_R1.h5'
+model_dir = '/home/USAI/media/tohn/SSD/ModelTrainByImages/R2_1/models/B0R2_block4_5FP_1FC.h5'
 model = load_model(model_dir)
 height = width = model.input_shape[1]
 
 x = model.get_layer('top_activation').output
 prediction_layer = model.output
 #predict angle branch
-global_average_layer2 = layers.GlobalAveragePooling2D(name = 'head_pooling_2')(x)
-dropout_layer_2 = layers.Dropout(0.50,name = 'head_dropout_1_2')(global_average_layer2)
-FC2 = layers.Dense(1000, activation='relu',name = 'FC1_2')(dropout_layer_2)
-dropout_layer_2 = layers.Dropout(0.50,name = 'head_dropout_2_2')(FC2)
-prediction_layer2 = layers.Dense(15, activation='softmax',name = 'prediction_layer_2')(dropout_layer_2)
+global_average_layer2 = layers.GlobalAveragePooling2D()(x)
+dropout_layer_2 = layers.Dropout(0.50)(global_average_layer2)
+prediction_layer2 = layers.Dense(15, activation='softmax',name='Pred_View')(dropout_layer_2)
 
 model2 = models.Model(inputs= model.input, outputs=[prediction_layer,prediction_layer2]) 
 model2.summary()
@@ -77,9 +75,9 @@ train_generator = train_datagen.flow_from_dataframe(
         dataframe = dataframe_train1HOT,
         directory = train_dir,
         x_col = 'filename',
-        y_col = ['Views_FP-A','Views_FP-B','Views_FP-C','Views_FP-D','Views_FP-E','Sub Position_P1', 'Sub Position_P2', 'Sub Position_P31', 'Sub Position_P32', 
-                 'Sub Position_P41', 'Sub Position_P42', 'Sub Position_P51', 'Sub Position_P52', 'Sub Position_P61', 'Sub Position_P62', 
-                 'Sub Position_P71', 'Sub Position_P72', 'Sub Position_P8'],
+        y_col = ['Views_FP-A','Views_FP-B','Views_FP-C','Views_FP-D','Views_FP-E','Sub_class_AB01','Sub_class_AB02','Sub_class_AB03','Sub_class_AB04','Sub_class_AB05',
+                 'Sub_class_AB06','Sub_class_AB07','Sub_class_AB081','Sub_class_AB082','Sub_class_AB083','Sub_class_AB09','Sub_class_AB10',
+                 'Sub_class_AB11','Sub_class_AB12','Sub_class_Normal'],
         target_size = (height, width),
         batch_size=batch_size,
         color_mode= 'rgb',
@@ -89,9 +87,9 @@ test_generator = test_datagen.flow_from_dataframe(
         dataframe = dataframe_test1HOT,
         directory = test_dir,
         x_col = 'filename',
-        y_col = ['Views_FP-A','Views_FP-B','Views_FP-C','Views_FP-D','Views_FP-E','Sub Position_P1', 'Sub Position_P2', 'Sub Position_P31', 'Sub Position_P32', 
-                 'Sub Position_P41', 'Sub Position_P42', 'Sub Position_P51', 'Sub Position_P52', 'Sub Position_P61', 'Sub Position_P62', 
-                 'Sub Position_P71', 'Sub Position_P72', 'Sub Position_P8'],
+        y_col = ['Views_FP-A','Views_FP-B','Views_FP-C','Views_FP-D','Views_FP-E','Sub_class_AB01','Sub_class_AB02','Sub_class_AB03','Sub_class_AB04','Sub_class_AB05',
+                 'Sub_class_AB06','Sub_class_AB07','Sub_class_AB081','Sub_class_AB082','Sub_class_AB083','Sub_class_AB09','Sub_class_AB10',
+                 'Sub_class_AB11','Sub_class_AB12','Sub_class_Normal'],
         target_size = (height, width),
         batch_size=batch_size,
         color_mode= 'rgb',
@@ -166,7 +164,7 @@ def load_training_data():
     X = data[0]
     Y1 = np.column_stack((data[1][0], data[1][1], data[1][2], data[1][3], data[1][4]))
     Y2 = np.column_stack((data[1][5], data[1][6], data[1][7], data[1][8],data[1][9], data[1][10], 
-                          data[1][11], data[1][12],data[1][13], data[1][14], data[1][15], data[1][16], data[1][17]))
+                          data[1][11], data[1][12],data[1][13], data[1][14], data[1][15], data[1][16], data[1][17], data[1][18], data[1][19]))
     
     return (X, [Y1,Y2])
 
@@ -176,15 +174,15 @@ def load_test_data():
     X = data[0]
     Y1 = np.column_stack((data[1][0], data[1][1], data[1][2], data[1][3], data[1][4]))
     Y2 = np.column_stack((data[1][5], data[1][6], data[1][7], data[1][8],data[1][9], data[1][10], 
-                          data[1][11], data[1][12],data[1][13], data[1][14], data[1][15], data[1][16], data[1][17]))
+                          data[1][11], data[1][12],data[1][13], data[1][14], data[1][15], data[1][16], data[1][17], data[1][18], data[1][19]))
     
     return (X, [Y1,Y2])
     
 #tensorboard
 import datetime
 current_time = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
-train_log_dir = '/media/tohn/SSD/ModelTrainByImages/R2_1/mylogs_5FP_15AB_1FC_1/' + current_time + '/train'
-test_log_dir = '/media/tohn/SSD/ModelTrainByImages/R2_1/mylogs_5FP_15AB_1FC_1/' + current_time + '/test'
+train_log_dir = '/home/USAI/media/tohn/SSD/ModelTrainByImages/R2_1/mylogs_5FP_15AB_1FC_1/' + current_time + '/train'
+test_log_dir = '/home/USAI/media/tohn/SSD/ModelTrainByImages/R2_1/mylogs_5FP_15AB_1FC_1/' + current_time + '/test'
 train_summary_writer = tf.summary.create_file_writer(train_log_dir)
 test_summary_writer = tf.summary.create_file_writer(test_log_dir)
 
@@ -220,6 +218,6 @@ for epoch in range(EPOCHS):
 
 
 #save model   
-model2.save('/media/tohn/SSD/ModelTrainByImages/R2_1/models/NorAb_multitask_5FP_15AB_2FC_1.h5')
+model2.save('/home/USAI/media/tohn/SSD/ModelTrainByImages/R2_1/models/NorAb_multitask_5FP_15AB_2FC_1.h5')
 
     
