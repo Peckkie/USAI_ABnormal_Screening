@@ -53,7 +53,7 @@ prediction_layer = model.output
 dropout_layer_2 = layers.Dropout(0.50,name = 'head_dropout_1_2')(x)
 FC2 = layers.Dense(1000, activation='relu',name = 'FC1_2')(dropout_layer_2)
 dropout_layer_2 = layers.Dropout(0.50,name = 'head_dropout_2_2')(FC2)
-prediction_layer2 = layers.Dense(13, activation='softmax',name = 'prediction_layer_2')(dropout_layer_2)
+prediction_layer2 = layers.Dense(15, activation='softmax',name = 'prediction_layer_2')(dropout_layer_2)
 
 model2 = models.Model(inputs= model.input, outputs=[prediction_layer,prediction_layer2]) 
 model2.summary()
