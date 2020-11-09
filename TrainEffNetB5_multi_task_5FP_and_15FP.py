@@ -43,7 +43,7 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.models import load_model
 EPOCHS = 200
 batch_size = 16
-model_dir = '/media/tohn/SSD/ModelTrainByImages/R1_1/models/B5_R1_FP2_relu_2FC.h5'
+model_dir = '/home/USAI/media/tohn/SSD/ModelTrainByImages/R1_1/models/B5_R1_FP2_relu_2FC.h5'
 model = load_model(model_dir)
 height = width = model.input_shape[1]
 
