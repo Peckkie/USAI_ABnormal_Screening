@@ -43,17 +43,18 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.models import load_model
 EPOCHS = 200
 batch_size = 16
-model_dir = '/home/USAI/media/tohn/SSD/ModelTrainByImages/R2_1/models/B0R2_block4_5FP_1FC.h5'
+model_dir = '/media/tohn/SSD/ModelTrainByImages/R1_1/models/B5_R1_FP2_relu_2FC.h5'
 model = load_model(model_dir)
 height = width = model.input_shape[1]
 
 x = model.get_layer('top_activation').output
 prediction_layer = model.output
 #predict angle branch
-global_average_layer2 = layers.GlobalAveragePooling2D()(x)
-dropout_layer_2 = layers.Dropout(0.50)(global_average_layer2)
-prediction_layer2 = layers.Dense(15, activation='softmax',name='Pred_View')(dropout_layer_2)
-
+global_average_layer2 = layers.GlobalAveragePooling2D(name = 'head_pooling_2')(x)
+dropout_layer_2 = layers.Dropout(0.50,name = 'head_dropout_1_2')(global_average_layer2)
+FC2 = layers.Dense(1000, activation='relu',name = 'FC1_2')(dropout_layer_2)
+dropout_layer_2 = layers.Dropout(0.50,name = 'head_dropout_2_2')(FC2)
+prediction_layer2 = layers.Dense(15, activation='softmax',name = 'prediction_layer_2')(dropout_layer_2)
 model2 = models.Model(inputs= model.input, outputs=[prediction_layer,prediction_layer2]) 
 model2.summary()
  
