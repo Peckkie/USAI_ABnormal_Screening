@@ -21,13 +21,13 @@ ImageFile.LOAD_TRUNCATED_IMAGES = True
 batch_size = 16
 epochs = 200
 #Train
-dataframe = pd.read_csv('/home/USAI/codes/USAI/Traindf_fold7_2.csv')
-base_dir = '/home/USAI/media/tohn/SSD/Images/Image7'
+dataframe = pd.read_csv('/home/yupaporn/codes/USAI/Traindf_fold7_2.csv')
+base_dir = '/media/tohn/SSD/Images/Image7'
 os.chdir(base_dir)
 train_dir = os.path.join(base_dir, 'train')
 
 #validation
-valframe = pd.read_csv( '/home/USAI/codes/USAI/Validationdf_fold7_2.csv')
+valframe = pd.read_csv( '/home/yupaporn/codes/USAI/Validationdf_fold7_2.csv')
 validation_dir = os.path.join(base_dir, 'validation')
 
 #load model
@@ -36,7 +36,7 @@ import efficientnet.tfkeras
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.models import load_model
 
-model_dir = '/home/USAI/media/tohn/SSD/ModelTrainByImages/R1_7/models/B5_R1_15AB_relu_1FC_fold7_2.h5'
+model_dir = '/media/tohn/SSD/ModelTrainByImages/R1_7/models/B5_R1_15AB_relu_1FC_fold7_2.h5'
 model = load_model(model_dir)
 height = width = model.input_shape[1]
 
@@ -74,9 +74,9 @@ test_generator = test_datagen.flow_from_dataframe(
         color_mode= 'rgb',
         class_mode='categorical')
 
-os.chdir('/home/USAI/media/tohn/SSD/ModelTrainByImages/R2_7')
+os.chdir('/media/tohn/SSD/ModelTrainByImages/R2_7')
 
-root_logdir = '/home/USAI/media/tohn/SSD/ModelTrainByImages/R2_7/my_logs_block5_15AB_1FC_2'
+root_logdir = '/media/tohn/SSD/ModelTrainByImages/R2_7/my_logs_block5_15AB_1FC_2'
 def get_run_logdir():
     import time
     run_id = time.strftime("run_%Y_%m_%d_%H_%M_%S")
